@@ -50,6 +50,41 @@ module.exports = function(app, passport) {
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
+
+        
+        // =============================================================================
+        // ENTER MEAL TO DB 
+        // =============================================================================
+
+        var configDB = require('../config/database.js');
+                
+        var mongoose = require('mongoose');
+        mongoose.connect(configDB.url) // connect to our database
+
+        var db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'connection error:'));
+        db.once('open', function() {
+          // we're connected!
+        });
+        var mealSchema = mongoose.Schema({
+            username: String,
+            item: String,
+            day: Date,
+            hungerLevel: Number,
+            satietyLevel: Number
+        });
+
+        var Meal = mongoose.model('Meal', mealSchema);
+                
+        app.post('/meals', (request, response) => {
+            db.collection('meals').save(request.body, (err, result) => {
+                if (err) return console.log(err)
+                console.log(request)
+                console.log('saved to database')
+                response.redirect('/')
+            })
+        });
+
 // =============================================================================
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================
@@ -73,3 +108,5 @@ function isLoggedIn(req, res, next) {
 
     res.redirect('/');
 }
+
+

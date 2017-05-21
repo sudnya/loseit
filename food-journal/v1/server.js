@@ -14,26 +14,8 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 require('./config/passport')(passport);
-var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-var mongoose = require('mongoose');
-mongoose.connect(configDB.url) // connect to our database
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // we're connected!
-});
-var mealSchema = mongoose.Schema({
-    username: String,
-    item: String,
-    day: Date,
-    hungerLevel: Number,
-    satietyLevel: Number
-});
-
-var Meal = mongoose.model('Meal', mealSchema);
 
 //require('./config/passport')(passport); // pass passport for configuration
 
@@ -62,11 +44,3 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 app.listen(port);
 console.log('The magic happens on port ' + port);
 
-app.post('/meals', (request, response) => {
-    db.collection('meals').save(request.body, (err, result) => {
-        if (err) return console.log(err)
-        console.log(request)
-        console.log('saved to database')
-        response.redirect('/')
-    })
-})
