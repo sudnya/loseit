@@ -4,15 +4,20 @@
     <title>Food Journal Authentication</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- If IE use the latest rendering engine -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set the page to the width of the device and set the zoon level -->
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
     <style>
         body         { padding-top:80px; }
     </style>
 </head>
 <body>
-<div class="container">
+
+<div class="container-fluid">
 <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-user"></span> Add Local Account</h1>
+    <h1><span class="fa fa-user"></span> Add Account</h1>
 
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
