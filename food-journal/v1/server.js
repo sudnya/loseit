@@ -5,7 +5,6 @@
 var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
-var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
@@ -14,12 +13,29 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
+require('./config/passport')(passport);
 var configDB = require('./config/database.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+var mongoose = require('mongoose');
+mongoose.connect(configDB.url) // connect to our database
 
-require('./config/passport')(passport); // pass passport for configuration
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+});
+var mealSchema = mongoose.Schema({
+    username: String,
+    item: String,
+    day: Date,
+    hungerLevel: Number,
+    satietyLevel: Number
+});
+
+var Meal = mongoose.model('Meal', mealSchema);
+
+//require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -45,3 +61,12 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 // launch ======================================================================
 app.listen(port);
 console.log('The magic happens on port ' + port);
+
+app.post('/meals', (request, response) => {
+    db.collection('meals').save(request.body, (err, result) => {
+        if (err) return console.log(err)
+        console.log(request)
+        console.log('saved to database')
+        response.redirect('/')
+    })
+})

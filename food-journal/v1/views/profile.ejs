@@ -4,6 +4,16 @@
     <title>Food Journal</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+<!-- If IE use the latest rendering engine -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+<!-- Set the page to the width of the device and set the zoon level -->
+<meta name="viewport" content="width = device-width, initial-scale = 1">
+
+
+    <link rel="stylesheet" href="../css/rating.css">
+
     <style>
         body         { padding-top:80px; word-wrap:break-word; }
     </style>
@@ -12,7 +22,7 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Journal Home </h1>
+        <h1><span class="fa fa-anchor"></span> Food Journal Home </h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
@@ -26,13 +36,176 @@
                     <p>
                         <strong>Welcome <%= user.local.username %> ! </strong><br>
                     </p>
+                    <!--  jQuery -->
+                    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+                    <!-- Bootstrap Date-Picker Plugin -->
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
                     
+                    
+                    <!-- Form code begins -->
+                    <form action="/meals" method="POST">
+                          <div class="form-group"> <!-- Date input -->
+                                <label class="control-label" for="date">Date</label>
+                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/><br>
+                                
+                                <input type='hidden' name='username' value=<%= user.local.username %>> 
+
+                                <input type="text" placeholder="Food Item" name="item">
+                                <br><br>How hungry were you right before this meal?<br>
+                                <input type="number" class="rating" id="hungerLevel" name="hungerLevel" data-min="1" data-max="5" value="0">                   
+                                <br>How satisfied were you after this meal?<br>
+                                <input type="number" class="rating" id="satietyLevel" name="satietyLevel" data-min="1" data-max="5" value="0">                   
+                          </div>
+                          <div class="form-group"> <!-- Submit button -->
+                            <button class="btn btn-primary " name="submit" type="submit">Submit</button>
+                          </div>
+    
+                    </form>
+                    <!-- Form code ends --> 
+                    
+                    <script>
+                        $(document).ready(function(){
+                          var date_input=$('input[name="date"]'); //our date input has the name "date"
+                          var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+                          var options={
+                            format: 'mm/dd/yyyy',
+                            container: container,
+                            todayHighlight: true,
+                            autoclose: true,
+                          };
+                          date_input.datepicker(options);
+                        })
+                    </script>
+
+
+
+<script>
+//TODO: find a way to include the following code via app/models/rating.js
+(function ($) {
+
+  $.fn.rating = function () {
+
+    var element;
+
+    // A private function to highlight a star corresponding to a given value
+    function _paintValue(ratingInput, value) {
+      var selectedStar = $(ratingInput).find('[data-value=' + value + ']');
+      selectedStar.removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+      selectedStar.prevAll('[data-value]').removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+      selectedStar.nextAll('[data-value]').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+    }
+
+    // A private function to remove the selected rating
+    function _clearValue(ratingInput) {
+      var self = $(ratingInput);
+      self.find('[data-value]').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+      self.find('.rating-clear').hide();
+      self.find('input').val('').trigger('change');
+    }
+
+    // Iterate and transform all selected inputs
+    for (element = this.length - 1; element >= 0; element--) {
+
+      var el, i, ratingInputs,
+        originalInput = $(this[element]),
+        max = originalInput.data('max') || 5,
+        min = originalInput.data('min') || 0,
+        clearable = originalInput.data('clearable') || null,
+        stars = '';
+
+      // HTML element construction
+      for (i = min; i <= max; i++) {
+        // Create <max> empty stars
+        stars += ['<span class="glyphicon glyphicon-star-empty" data-value="', i, '"></span>'].join('');
+      }
+      // Add a clear link if clearable option is set
+      if (clearable) {
+        stars += [
+          ' <a class="rating-clear" style="display:none;" href="javascript:void">',
+          '<span class="glyphicon glyphicon-remove"></span> ',
+          clearable,
+          '</a>'].join('');
+      }
+
+      el = [
+        // Rating widget is wrapped inside a div
+        '<div class="rating-input">',
+        stars,
+        // Value will be hold in a hidden input with same name and id than original input so the form will still work
+        '<input type="hidden" name="',
+        originalInput.attr('name'),
+        '" value="',
+        originalInput.val(),
+        '" id="',
+        originalInput.attr('id'),
+        '" />',
+        '</div>'].join('');
+
+      // Replace original inputs HTML with the new one
+      originalInput.replaceWith(el);
+
+    }
+
+    // Give live to the newly generated widgets
+    $('.rating-input')
+      // Highlight stars on hovering
+      .on('mouseenter', '[data-value]', function () {
+        var self = $(this);
+        _paintValue(self.closest('.rating-input'), self.data('value'));
+      })
+      // View current value while mouse is out
+      .on('mouseleave', '[data-value]', function () {
+        var self = $(this);
+        var val = self.siblings('input').val();
+        if (val) {
+          _paintValue(self.closest('.rating-input'), val);
+        } else {
+          _clearValue(self.closest('.rating-input'));
+        }
+      })
+      // Set the selected value to the hidden field
+      .on('click', '[data-value]', function (e) {
+        var self = $(this);
+        var val = self.data('value');
+        self.siblings('input').val(val).trigger('change');
+        self.siblings('.rating-clear').show();
+        e.preventDefault();
+        false
+      })
+      // Remove value on clear
+      .on('click', '.rating-clear', function (e) {
+        _clearValue($(this).closest('.rating-input'));
+        e.preventDefault();
+        false
+      })
+      // Initialize view with default value
+      .each(function () {
+        var val = $(this).find('input').val();
+        if (val) {
+          _paintValue(this, val);
+          $(this).find('.rating-clear').show();
+        }
+      });
+
+  };
+
+  // Auto apply conversion of number fields with class 'rating' into rating-fields
+  $(function () {
+    if ($('input.rating[type=number]').length > 0) {
+      $('input.rating[type=number]').rating();
+    }
+  });
+
+}(jQuery));
+</script>
+
                 <% } else { %>
                 <% } %>
 
             </div>
         </div>
-
+        
 
     <div class="text-center">
     </div>
