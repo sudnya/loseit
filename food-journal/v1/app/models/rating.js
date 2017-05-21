@@ -1,171 +1,117 @@
-(function() {
+(function ($) {
 
-  'use strict';
+  $.fn.rating = function () {
 
-  /**
-   * rating
-   * 
-   * @description The rating component.
-   * @param {HTMLElement} el The HTMl element to build the rating widget on
-   * @param {Number} currentRating The current rating value
-   * @param {Number} maxRating The max rating for the widget
-   * @param {Function} callback The optional callback to run after set rating
-   * @return {Object} Some public methods
-   */
-  function rating(el, currentRating, maxRating, callback) {
-    
-    /**
-     * stars
-     * 
-     * @description The collection of stars in the rating.
-     * @type {Array}
-     */
-    var stars = [];
+    var element;
 
-    /**
-     * init
-     *
-     * @description Initializes the rating widget. Returns nothing.
-     */
-    (function init() {
-      if (!el) { throw Error('No element supplied.'); }
-      if (!maxRating) { throw Error('No max rating supplied.'); }
-      if (!currentRating) { currentRating = 0; }
-      if (currentRating < 0 || currentRating > maxRating) { throw Error('Current rating is out of bounds.'); }
+    // A private function to highlight a star corresponding to a given value
+    function _paintValue(ratingInput, value) {
+      var selectedStar = $(ratingInput).find('[data-value=' + value + ']');
+      selectedStar.removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+      selectedStar.prevAll('[data-value]').removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+      selectedStar.nextAll('[data-value]').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+    }
 
-      for (var i = 0; i < maxRating; i++) {
-        var star = document.createElement('li');
-        star.classList.add('c-rating__item');
-        star.setAttribute('data-index', i);
-        if (i < currentRating) { star.classList.add('is-active'); }
-        el.appendChild(star);
-        stars.push(star);
-        attachStarEvents(star);
+    // A private function to remove the selected rating
+    function _clearValue(ratingInput) {
+      var self = $(ratingInput);
+      self.find('[data-value]').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+      self.find('.rating-clear').hide();
+      self.find('input').val('').trigger('change');
+    }
+
+    // Iterate and transform all selected inputs
+    for (element = this.length - 1; element >= 0; element--) {
+
+      var el, i, ratingInputs,
+        originalInput = $(this[element]),
+        max = originalInput.data('max') || 5,
+        min = originalInput.data('min') || 0,
+        clearable = originalInput.data('clearable') || null,
+        stars = '';
+
+      // HTML element construction
+      for (i = min; i <= max; i++) {
+        // Create <max> empty stars
+        stars += ['<span class="glyphicon glyphicon-star-empty" data-value="', i, '"></span>'].join('');
       }
-    })();
-
-    /**
-     * iterate
-     *
-     * @description A simple iterator used to loop over the stars collection.
-     *   Returns nothing.
-     * @param {Array} collection The collection to be iterated
-     * @param {Function} callback The callback to run on items in the collection
-     */
-    function iterate(collection, callback) {
-      for (var i = 0; i < collection.length; i++) {
-        var item = collection[i];
-        callback(item, i);
+      // Add a clear link if clearable option is set
+      if (clearable) {
+        stars += [
+          ' <a class="rating-clear" style="display:none;" href="javascript:void">',
+          '<span class="glyphicon glyphicon-remove"></span> ',
+          clearable,
+          '</a>'].join('');
       }
+
+      el = [
+        // Rating widget is wrapped inside a div
+        '<div class="rating-input">',
+        stars,
+        // Value will be hold in a hidden input with same name and id than original input so the form will still work
+        '<input type="hidden" name="',
+        originalInput.attr('name'),
+        '" value="',
+        originalInput.val(),
+        '" id="',
+        originalInput.attr('id'),
+        '" />',
+        '</div>'].join('');
+
+      // Replace original inputs HTML with the new one
+      originalInput.replaceWith(el);
+
     }
 
-    /**
-     * attachStarEvents
-     *
-     * @description Attaches events to each star in the collection. Returns
-     *   nothing.
-     * @param {HTMLElement} star The star element
-     */
-    function attachStarEvents(star) {
-      starMouseOver(star);
-      starMouseOut(star);
-      starClick(star);
-    }
-
-    /**
-     * starMouseOver
-     *
-     * @description The mouseover event for the star. Returns nothing.
-     * @param {HTMLElement} star The star element
-     */
-    function starMouseOver(star) {
-      star.addEventListener('mouseover', function(e) {
-        iterate(stars, function(item, index) {
-          if (index <= parseInt(star.getAttribute('data-index'))) {
-            item.classList.add('is-active');
-          } else {
-            item.classList.remove('is-active');
-          }
-        });
-      });
-    }
-
-    /**
-     * starMouseOut
-     *
-     * @description The mouseout event for the star. Returns nothing.
-     * @param {HTMLElement} star The star element
-     */
-    function starMouseOut(star) {
-      star.addEventListener('mouseout', function(e) {
-        if (stars.indexOf(e.relatedTarget) === -1) {
-          setRating(null, false);
-        }
-      });
-    }
-
-    /**
-     * starClick
-     *
-     * @description The click event for the star. Returns nothing.
-     * @param {HTMLElement} star The star element
-     */
-    function starClick(star) {
-      star.addEventListener('click', function(e) {
-        e.preventDefault();
-        setRating(parseInt(star.getAttribute('data-index')) + 1, true);
-      });
-    }
-
-    /**
-     * setRating
-     *
-     * @description Sets and updates the currentRating of the widget, and runs
-     *   the callback if supplied. Returns nothing.
-     * @param {Number} value The number to set the rating to
-     * @param {Boolean} doCallback A boolean to determine whether to run the
-     *   callback or not
-     */
-    function setRating(value, doCallback) {
-      if (value && value < 0 || value > maxRating) { return; }
-      if (doCallback === undefined) { doCallback = true; }
-
-      currentRating = value || currentRating;
-
-      iterate(stars, function(star, index) {
-        if (index < currentRating) {
-          star.classList.add('is-active');
+    // Give live to the newly generated widgets
+    $('.rating-input')
+      // Highlight stars on hovering
+      .on('mouseenter', '[data-value]', function () {
+        var self = $(this);
+        _paintValue(self.closest('.rating-input'), self.data('value'));
+      })
+      // View current value while mouse is out
+      .on('mouseleave', '[data-value]', function () {
+        var self = $(this);
+        var val = self.siblings('input').val();
+        if (val) {
+          _paintValue(self.closest('.rating-input'), val);
         } else {
-          star.classList.remove('is-active');
+          _clearValue(self.closest('.rating-input'));
+        }
+      })
+      // Set the selected value to the hidden field
+      .on('click', '[data-value]', function (e) {
+        var self = $(this);
+        var val = self.data('value');
+        self.siblings('input').val(val).trigger('change');
+        self.siblings('.rating-clear').show();
+        e.preventDefault();
+        false
+      })
+      // Remove value on clear
+      .on('click', '.rating-clear', function (e) {
+        _clearValue($(this).closest('.rating-input'));
+        e.preventDefault();
+        false
+      })
+      // Initialize view with default value
+      .each(function () {
+        var val = $(this).find('input').val();
+        if (val) {
+          _paintValue(this, val);
+          $(this).find('.rating-clear').show();
         }
       });
 
-      if (callback && doCallback) { callback(getRating()); }
+  };
+
+  // Auto apply conversion of number fields with class 'rating' into rating-fields
+  $(function () {
+    if ($('input.rating[type=number]').length > 0) {
+      $('input.rating[type=number]').rating();
     }
+  });
 
-    /**
-     * getRating
-     *
-     * @description Gets the current rating.
-     * @return {Number} The current rating
-     */
-    function getRating() {
-      return currentRating;
-    }
+}(jQuery));
 
-    /**
-     * Returns the setRating and getRating methods
-     */
-    return {
-      setRating: setRating,
-      getRating: getRating
-    };
-
-  }
-
-  /**
-   * Add to global namespace
-   */
-  window.rating = rating;
-
-})();
