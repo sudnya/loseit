@@ -60,6 +60,7 @@ module.exports = function(app, passport) {
                 
         var mongoose = require('mongoose');
         mongoose.connect(configDB.url) // connect to our database
+        //var Meal       = require('../app/models/meal');
 
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
@@ -81,10 +82,18 @@ module.exports = function(app, passport) {
                 if (err) return console.log(err)
                 console.log(request)
                 console.log('saved to database')
-                response.redirect('/')
+                response.redirect('/profile')
             })
         });
 
+        app.get('/review', (request, response) => {
+            db.collection('meals').find().toArray((err, result) => {
+                console.log(result)
+            if (err) return console.log(err)
+            // renders index.ejs
+                response.render('review.ejs', {meals: result, user : request.user})
+            })
+        })
 // =============================================================================
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================

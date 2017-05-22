@@ -6,6 +6,7 @@ var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
 var passport = require('passport');
+//var journal  = require('journal');
 var flash    = require('connect-flash');
 
 var morgan       = require('morgan');
@@ -14,6 +15,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 require('./config/passport')(passport);
+var journal = require('./config/journal');
 
 // configuration ===============================================================
 
@@ -36,9 +38,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+//app.use(journal());
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/routes.js')(app, passport, journal); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);

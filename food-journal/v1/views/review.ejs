@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <title>Food Journal Review</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+    <!-- If IE use the latest rendering engine -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set the page to the width of the device and set the zoon level -->
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <!--  jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+                    
+
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Food Journal Review </h1>
+        <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
+        <a href="/profile" class="btn btn-primary btn-sm">Home</a>
+    </div>
+
+    <div class="row">
+        <form action="/review" method="GET">
+        <ul class="meals">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Meal</th>
+                    <th>Hunger Level</th>
+                    <th>Satiety Level</th>
+                </tr>
+                </thead>
+                <% for(var i=0; i<meals.length; i++) {%>
+                    <% if ( meals[i].username === user.local.username) {%>
+                        <tbody>
+
+                            <% if (meals[i].hungerLevel > 4) {%><tr class="success">
+                            <%}%>
+                            <% if (meals[i].hungerLevel < 2) {%><tr class="danger">
+                            <%}%>
+ 
+                            <td><%= meals[i].item %></td>
+                            <td><%= meals[i].hungerLevel %></td>
+                            <td><%= meals[i].satietyLevel %></td>
+                            </tr> <%}%> 
+                        </tbody>
+            <% } %>
+            </table>
+
+        </form>
+
+
+    <div class="text-center">
+    </div>
+
+</div>
+</div>
+</body>
+</html>
