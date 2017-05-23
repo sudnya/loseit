@@ -29,6 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
+app.use(express.static('public'))
+
 // required for passport
 app.use(session({
     secret: 'meh', // session secret
@@ -41,7 +43,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 //app.use(journal());
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport, journal); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport, journal); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);
