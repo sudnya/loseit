@@ -6,16 +6,13 @@ var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
 var passport = require('passport');
-//var journal  = require('journal');
+var path = require('path');
 var flash    = require('connect-flash');
-
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-require('./config/passport')(passport);
-var journal = require('./config/journal');
 
 // configuration ===============================================================
 
@@ -29,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
+require('./public/javascripts/config/passport')(passport);
 
 // required for passport
 app.use(session({
@@ -40,10 +38,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-//app.use(journal());
 
 // routes ======================================================================
-require('./routes/routes.js')(app, passport, journal); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);

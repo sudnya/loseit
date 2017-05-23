@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
         // ENTER MEAL TO DB 
         // =============================================================================
 
-        var configDB = require('../config/database.js');
+        var configDB = require('../public/javascripts/config/database.js');
                 
         var mongoose = require('mongoose');
         mongoose.connect(configDB.url) // connect to our database
