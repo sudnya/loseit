@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 app.use(express.static(path.join(__dirname, 'public')))
-require('./public/javascripts/config/passport')(passport);
+require('./config/passport')(passport);
 
 // required for passport
 app.use(session({

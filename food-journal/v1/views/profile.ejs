@@ -10,12 +10,12 @@
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <!--  jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <!-- Bootstrap Date-Picker Plugin -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-                    
-
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+    <!-- Bootstrap Date-Picker Plugin     -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/rangeslider.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-datepicker3.css"/>
+    <script type="text/javascript" src="/javascripts/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
 
@@ -41,15 +41,22 @@
                     <form action="/meals" method="POST">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
-                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/><br>
+                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/><br><br><br><br>
                                 
                                 <input type='hidden' name='username' value=<%= user.local.username %>> 
-
-                                <input type="text" style="font-size: 12pt; height: 400px; width:280px; " placeholder="Meal description" name="item">
+                                    
+                                    <label for ="food">Meal description</label>
+                                    <textarea class = "form-control" rows = "4" name="item"></textarea>
                                 <br><br>How hungry were you right before this meal?<br>
-                                <input type="range" id="hungerLevel" name="hungerLevel" min="1" max="5" value="3">                   
+                                <div class="range-slider">
+                                  <input class="range-slider__range" type="range" id="hungerLevel" name="hungerLevel" value="3" min="1" max="5">
+                                  <span class="range-slider__value">0</span>
+                                </div>
                                 <br>How satisfied were you after this meal?<br>
-                                <input type="range" id="satietyLevel" name="satietyLevel" min="1" max="5" value="3">  
+                                <div class="range-slider">
+                                  <input class="range-slider__range" type="range" id="satietyLevel" name="satietyLevel" value="3" min="1" max="5">
+                                  <span class="range-slider__value">0</span>
+                                </div>
 
                             </div>
                           <div class="form-group"> <!-- Submit button -->
@@ -73,24 +80,27 @@
                         })
                     </script>
 
-<script src="jquery.min.js"></script>
-<script src="rangeslider.min.js"></script>
-<script>
-    // Initialize a new plugin instance for all
-    // e.g. $('input[type="range"]') elements.
-    $('input[type="range"]').rangeslider();
+                    <script>
+                        var rangeSlider = function(){
+                          var slider = $('.range-slider'),
+                              range = $('.range-slider__range'),
+                              value = $('.range-slider__value');
+                            
+                          slider.each(function(){
 
-    // Destroy all plugin instances created from the
-    // e.g. $('input[type="range"]') elements.
-    $('input[type="range"]').rangeslider('destroy');
+                            value.each(function(){
+                              var value = $(this).prev().attr('value');
+                              $(this).html(value);
+                            });
 
-    // Update all rangeslider instances for all
-    // e.g. $('input[type="range"]') elements.
-    // Usefull if you changed some attributes e.g. `min` or `max` etc.
-    $('input[type="range"]').rangeslider('update', true);
-</script>
+                            range.on('input', function(){
+                              $(this).next(value).html(this.value);
+                            });
+                          });
+                        };
 
-
+                        rangeSlider();
+                    </script>
                 <% } %>
 
             </div>
