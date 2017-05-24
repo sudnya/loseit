@@ -47,13 +47,27 @@
                                     
                                     <label for ="food">Meal description</label>
                                     <textarea class = "form-control" rows = "4" name="item"></textarea>
-                                <br><br>How hungry were you right before this meal?<br>
+                                
                                 <div class="range-slider">
+                                    <br>How <strong>hungry</strong> were you right before this meal? On a scale of 1-5 where:
+                                    <br>1 : Not hungry at all
+                                    <br>2 : A bit hungry
+                                    <br>3 : Hungry
+                                    <br>4 : Quite hungry
+                                    <br>5 : Starving!<br><br>
+
                                   <input class="range-slider__range" type="range" id="hungerLevel" name="hungerLevel" value="3" min="1" max="5">
                                   <span class="range-slider__value">0</span>
                                 </div>
-                                <br>How satisfied were you after this meal?<br>
+
+
                                 <div class="range-slider">
+                                    <br>How <strong>satisfied</strong> were you after this meal? On a scale of 1-5 where:
+                                    <br>1 : Not satisfied
+                                    <br>2 : A bit satisfied
+                                    <br>3 : Satified
+                                    <br>4 : Quite satisfied
+                                    <br>5 : Overfull!<br><br>
                                   <input class="range-slider__range" type="range" id="satietyLevel" name="satietyLevel" value="3" min="1" max="5">
                                   <span class="range-slider__value">0</span>
                                 </div>
