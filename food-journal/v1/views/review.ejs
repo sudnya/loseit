@@ -33,6 +33,7 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>MealType</th>
                     <th>Meal</th>
                     <th>Hunger Level</th>
                     <th>Satiety Level</th>
@@ -47,6 +48,7 @@
                             <% if (meals[i].hungerLevel < 2) {%><tr class="danger">
                             <%}%>
  
+                            <td><%= meals[i].mealType %></td>
                             <td><%= meals[i].item %></td>
                             <td><%= meals[i].hungerLevel %></td>
                             <td><%= meals[i].satietyLevel %></td>

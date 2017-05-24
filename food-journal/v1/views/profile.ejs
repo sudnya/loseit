@@ -44,9 +44,15 @@
                                 <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/><br><br><br><br>
                                 
                                 <input type='hidden' name='username' value=<%= user.local.username %>> 
-                                    
-                                    <label for ="food">Meal description</label>
-                                    <textarea class = "form-control" rows = "4" name="item"></textarea>
+                                
+                                <label>Meal Name</label><br>
+                                    <label class="radio-inline"><input type="radio" name="mealType" value="Breakfast">Breakfast</label>
+                                    <label class="radio-inline"><input type="radio" name="mealType" value="Lunch">Lunch</label>
+                                    <label class="radio-inline"><input type="radio" name="mealType" value="Dinner">Dinner</label>
+                                    <label class="radio-inline"><input type="radio" name="mealType" value="Other">Other</label><br><br><br>
+
+                                <label for ="food">Meal description</label>
+                                <textarea class = "form-control" rows = "4" name="item"></textarea>
                                 
                                 <div class="range-slider">
                                     <br>How <strong>hungry</strong> were you right before this meal? On a scale of 1-5 where:

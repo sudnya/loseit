@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var mealSchema = mongoose.Schema({
     username: String,
+    mealType: String,
     item: String,
     day: Date,
     hungerLevel: Number,
