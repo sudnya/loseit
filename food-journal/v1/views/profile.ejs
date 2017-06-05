@@ -41,7 +41,7 @@
                     <form action="/meals" method="POST">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
-                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/><br><br><br><br>
+                                <input class="form-control" id="date" name="date" placeholder=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
                                 
                                 <input type='hidden' name='username' value=<%= user.local.username %>> 
                                 
@@ -91,6 +91,8 @@
                             container: container,
                             todayHighlight: true,
                             autoclose: true,
+                            disableTouchKeyboard: true,
+                            ignoreReadonly: true
                           };
                           date_input.datepicker(options);
                         })
