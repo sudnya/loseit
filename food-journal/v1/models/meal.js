@@ -6,7 +6,7 @@ var mealSchema = mongoose.Schema({
     username: String,
     mealType: String,
     item: String,
-    day: Date,
+    date: Date,
     hungerLevel: Number,
     satietyLevel: Number
 });
