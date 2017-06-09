@@ -37,7 +37,8 @@ module.exports.createUserSession = function(req, user) {
  */
 module.exports.createApp = function() {
   mongoose.Promise = global.Promise; 
-  mongoose.connect('mongodb://admin:Loseit2017@ds115712.mlab.com:15712/user-db-v1');
+  //TODO: bad idea to check in the following line :(
+  mongoose.connect('mongodb://admin:Loseit2017@ds147681.mlab.com:47681/food-journal');
 
   var app = express();
 
@@ -61,8 +62,6 @@ module.exports.createApp = function() {
   app.use(middleware.simpleAuth);
 
   // routes
-  app.use(require('./routes/auth'));
-  app.use(require('./routes/main'));
   app.use(require('./routes/routes'));
 
   return app;

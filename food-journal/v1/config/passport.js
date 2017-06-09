@@ -1,6 +1,5 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
 
 var utils = require('../utils');
 
@@ -102,7 +101,7 @@ module.exports = function(passport) {
                             if (err)
                                 return done(err);
 
-                            utils.createUserSession(req, user);
+                            utils.createUserSession(req, newUser);
 
                             return done(null, newUser);
                         });
