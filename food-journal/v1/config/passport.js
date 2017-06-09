@@ -1,6 +1,8 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
 
+var utils = require('../utils');
+
 // load up the user model
 var User = require('../models/user');
 
@@ -24,6 +26,7 @@ module.exports = function(passport) {
         });
     });
 
+    
     // =========================================================================
     // LOCAL LOGIN =============================================================
     // =========================================================================
@@ -52,8 +55,10 @@ module.exports = function(passport) {
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
 
                 // all is well, return user
-                else
+                else {
+                    utils.createUserSession(req, user);
                     return done(null, user);
+                }
             });
         });
 
@@ -96,6 +101,8 @@ module.exports = function(passport) {
                             if (err)
                                 return done(err);
 
+                            utils.createUserSession(req, newUser);
+
                             return done(null, newUser);
                         });
                     }
@@ -119,7 +126,7 @@ module.exports = function(passport) {
                         user.save(function (err) {
                             if (err)
                                 return done(err);
-                            
+                            utils.createUserSession(req, user);
                             return done(null,user);
                         });
                     }

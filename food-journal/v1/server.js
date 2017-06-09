@@ -13,7 +13,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-
 // configuration ===============================================================
 
 //require('./config/passport')(passport); // pass passport for configuration
