@@ -50,8 +50,10 @@ module.exports.createApp = function() {
   app.use(session({
     cookieName: 'session',
     secret: 'keyboard cat',
-    duration: 365 * 24 * 60 * 60 * 1000 * 1000000,
-    activeDuration: 365 * 24 * 60 * 60 * 1000 * 100000,
+    expires: new Date(Date.now() + 4294967295), 
+    maxAge:  4294967295,//(365 * 24 * 60 * 60 * 1000) + (30*24*60*60 * 10000) 
+    duration: 4294967295,//(365 * 24 * 60 * 60 * 1000) + (30*24*60*60 * 10000), // 365 days * 24 hours * 60 mins * 60 seconds * 1000millis
+    activeDuration: 4294967295,//365 * 24 * 60 * 60 * 1000,
   }));
 
   var csrf = require('csurf');
