@@ -14,10 +14,10 @@ module.exports = function(app, passport) {
         });
     });
 
-    // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+    // REDIRECT TO CHATBOT ==============================
+    app.get('/back-to-bot', function(req, res) {
+        //req.logout();
+        res.redirect('https://www.messenger.com/t/119981208576498/');
     });
 
 // =============================================================================
@@ -82,7 +82,7 @@ module.exports = function(app, passport) {
                 if (err) return console.log(err)
                 console.log(request)
                 console.log('saved to database')
-                response.redirect('/profile')
+                response.redirect('/review')
             })
         });
 
