@@ -43,12 +43,6 @@
                 <% for(var i=0; i<meals.length; i++) {%>
                     <% if ( meals[i].username === user.local.username) {%>
                         <tbody>
-
-                            <% if (meals[i].hungerLevel > 4) {%><tr class="success">
-                            <%}%>
-                            <% if (meals[i].hungerLevel < 2) {%><tr class="danger">
-                            <%}%>
- 
                             <td><%= meals[i].date %></td>
                             <td><%= meals[i].mealType %></td>
                             <td><%= meals[i].item %></td>
