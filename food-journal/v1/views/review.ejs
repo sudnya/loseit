@@ -41,16 +41,14 @@
                 </tr>
                 </thead>
                 <% for(var i=0; i<meals.length; i++) {%>
-                    <% if ( meals[i].username === user.local.username) {%>
-                        <tbody>
-                            <td><%= meals[i].date %></td>
-                            <td><%= meals[i].mealType %></td>
-                            <td><%= meals[i].item %></td>
-                            <td><%= meals[i].hungerLevel %></td>
-                            <td><%= meals[i].satietyLevel %></td>
-                            </tr> <%}%> 
-                        </tbody>
-            <% } %>
+                    <tbody>
+                        <td><%= meals[i].date %></td>
+                        <td><%= meals[i].mealType %></td>
+                        <td><%= meals[i].item %></td>
+                        <td><%= meals[i].hungerLevel %></td>
+                        <td><%= meals[i].satietyLevel %></td>
+                        </tr> <%}%> 
+                    </tbody>
             </table>
 
         </form>

@@ -87,7 +87,8 @@ module.exports = function(app, passport) {
         });
 
         app.get('/review', (request, response) => {
-            db.collection('meals').find().toArray((err, result) => {
+            console.log(request.user.local['username'])
+            db.collection('meals').find({'username': request.user.local['username']}).toArray((err, result) => {
                 console.log(result)
             if (err) return console.log(err)
             // renders index.ejs
