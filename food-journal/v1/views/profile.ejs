@@ -43,7 +43,8 @@
                     <form action="/meals" method="POST">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
-                                <input class="form-control" id="date" name="date" placeholder=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
+                                
+                                <input class="form-control" id="date" name="date" value=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
                                 
                                 <input type='hidden' name='username' value=<%= user.local.username %>> 
                                 
@@ -86,7 +87,8 @@
                     
                     <script>
                         $(document).ready(function(){
-                          var date_input=$('input[name="date"]'); //our date input has the name "date"
+                          var date_input = $('input[name="date"]'); //our date input has the name "date"
+
                           var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                           var options={
                             format: 'mm/dd/yyyy',

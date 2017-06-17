@@ -42,7 +42,7 @@
                 </thead>
                 <% for(var i=0; i<meals.length; i++) {%>
                     <tbody>
-                        <td><%= meals[i].date %></td>
+                        <td><%= moment(meals[i].date).format("MM/DD/YYYY, dddd") %></td>
                         <td><%= meals[i].mealType %></td>
                         <td><%= meals[i].item %></td>
                         <td><%= meals[i].hungerLevel %></td>

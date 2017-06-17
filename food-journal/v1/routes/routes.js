@@ -1,4 +1,5 @@
 module.exports = function(app, passport) {
+var moment = require('moment');
 
 // normal routes ===============================================================
 
@@ -83,7 +84,7 @@ module.exports = function(app, passport) {
                 console.log(result)
             if (err) return console.log(err)
             // renders index.ejs
-                response.render('review.ejs', {meals: result, user : request.user})
+                response.render('review.ejs', {meals: result, user : request.user, moment: moment})
             })
         })
 // =============================================================================
