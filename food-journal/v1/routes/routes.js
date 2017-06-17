@@ -60,23 +60,14 @@ module.exports = function(app, passport) {
                 
         var mongoose = require('mongoose');
         mongoose.connect(configDB.url) // connect to our database
-        //var Meal       = require('../app/models/meal');
+        var Meal       = require('../models/meal');
 
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
         db.once('open', function() {
           // we're connected!
         });
-        var mealSchema = mongoose.Schema({
-            username: String,
-            item: String,
-            day: Date,
-            hungerLevel: Number,
-            satietyLevel: Number
-        });
 
-        var Meal = mongoose.model('Meal', mealSchema);
-                
         app.post('/meals', (request, response) => {
             db.collection('meals').save(request.body, (err, result) => {
                 if (err) return console.log(err)
