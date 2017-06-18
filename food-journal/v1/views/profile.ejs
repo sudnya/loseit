@@ -36,7 +36,7 @@
                     
                     
                     <!-- Form code begins -->
-                    <form action="/meals" method="POST">
+                    <form name="myForm" action="/meals" method="POST" onsubmit="return validateForm()">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
                                 
@@ -80,7 +80,30 @@
     
                     </form>
                     <!-- Form code ends --> 
-                    
+                    <script>
+                        function validateForm() {
+                            var name = document.forms["myForm"]["mealType"].value;
+                            if (name == "") {
+                                alert("Meal name must be selected");
+                                return false;
+                            }
+                            var meal = document.forms["myForm"]["item"].value;
+                            if (meal == "") {
+                                alert("Meal description must be filled out");
+                                return false;
+                            }
+                            var hunger = document.forms["myForm"]["hungerLevel"].value;
+                            if (hunger == "") {
+                                alert("Hunger Level must be selected");
+                                return false;
+                            }
+                            var fullness = document.forms["myForm"]["satietyLevel"].value;
+                            if (fullness == "") {
+                                alert("Fullness Level must be selected");
+                                return false;
+                            }
+                        }
+                    </script>
                     <script>
                         $(document).ready(function(){
                           var date_input = $('input[name="date"]'); //our date input has the name "date"
