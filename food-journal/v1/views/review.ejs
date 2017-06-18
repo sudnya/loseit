@@ -13,6 +13,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
 </head>
@@ -39,15 +40,27 @@
                     <th>Fullness Level</th>
                 </tr>
                 </thead>
-                <% for(var i=0; i<meals.length; i++) {%>
+                <% for(index in sortedMealKeys) {%>
                     <tbody>
-                        <td><%= moment(meals[i].date).format("MM/DD/YYYY, dddd") %></td>
-                        <td><%= meals[i].mealType %></td>
-                        <td><%= meals[i].item %></td>
-                        <td><%= meals[i].hungerLevel %></td>
-                        <td><%= meals[i].satietyLevel %></td>
-                        </tr> <%}%> 
+                    <% var date = sortedMealKeys[index]; %>
+                    <tr>
+                        <td><%= moment(groupedMeals[date][0].date).format("MM/DD/YYYY, dddd") %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <% for(var i=0; i<groupedMeals[date].length; i++) {%>
+                        <tr>
+                            <td></td>
+                            <td><%= groupedMeals[date][i].mealType %></td>
+                            <td><%= groupedMeals[date][i].item %></td>
+                            <td><%= groupedMeals[date][i].hungerLevel %></td>
+                            <td><%= groupedMeals[date][i].satietyLevel %></td>
+                        </tr>
+                    <%}%> 
                     </tbody>
+                <%}%>
             </table> 
         </form>
     </div>

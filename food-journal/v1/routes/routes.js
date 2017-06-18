@@ -1,5 +1,6 @@
 module.exports = function(app, passport) {
 var moment = require('moment');
+var _ = require('underscore');
 
 // normal routes ===============================================================
 
@@ -81,9 +82,26 @@ var moment = require('moment');
         app.get('/review', (request, response) => {
             console.log(request.user.local['username'])
             db.collection('meals').find({'username': request.user.local['username']}).toArray((err, result) => {
+            var formatDate = function(date) { return moment(date).format("MM/DD/YYYY"); }
+            for(var i = 0; i < result.length; ++i) {
+                result[i].date = formatDate(result[i].date);
+            }
+            var groupedMeals = _.groupBy(result, function(meal){ return meal.date; })
+            var sortedMealKeys = [];
+
+            for(key in groupedMeals) {
+                sortedMealKeys.push(key);
+            }
+            
+            sortedMealKeys = sortedMealKeys.sort().reverse();
+            
+            for (index in sortedMealKeys) {
+                var key = sortedMealKeys[index];
+                console.log(Object.prototype.toString.call(key) + " " + key + " = " + String(groupedMeals[key]));
+            }
             if (err) return console.log(err)
             // renders index.ejs
-                response.render('review.ejs', {meals: result, moment: moment})
+                response.render('review.ejs', {groupedMeals: groupedMeals, sortedMealKeys : sortedMealKeys, moment: moment})
             })
         })
 // =============================================================================
