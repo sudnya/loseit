@@ -81,10 +81,9 @@ var moment = require('moment');
         app.get('/review', (request, response) => {
             console.log(request.user.local['username'])
             db.collection('meals').find({'username': request.user.local['username']}).toArray((err, result) => {
-                console.log(result)
             if (err) return console.log(err)
             // renders index.ejs
-                response.render('review.ejs', {meals: result, user : request.user, moment: moment})
+                response.render('review.ejs', {meals: result, moment: moment})
             })
         })
 // =============================================================================

@@ -14,7 +14,6 @@
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-                    
 
 </head>
 <body>
@@ -22,8 +21,8 @@
 <div class="container-fluid">
 
     <div class="page-header text-center">
-        <h1><span class="fa "></span> Food Journal Review </h1>
-        <a href="/back-to-bot" class="btn btn-primary btn-sm">Back to Bot</a>
+        <h1><span class="fa "></span>Food Journal Review</h1>
+        <h5><span class="fa "></span>Click Cancel Top Left to Exit</h5>
         <a href="/profile" class="btn btn-primary btn-sm">Log more food</a>
     </div>
 
@@ -34,10 +33,10 @@
                 <thead>
                 <tr>
                     <th>Date</th>
-                    <th>MealType</th>
+                    <th>Meal Type</th>
                     <th>Meal</th>
                     <th>Hunger Level</th>
-                    <th>Satiety Level</th>
+                    <th>Fullness Level</th>
                 </tr>
                 </thead>
                 <% for(var i=0; i<meals.length; i++) {%>
@@ -49,15 +48,13 @@
                         <td><%= meals[i].satietyLevel %></td>
                         </tr> <%}%> 
                     </tbody>
-            </table>
-
+            </table> 
         </form>
-
-
-    <div class="text-center">
     </div>
-
-</div>
+        
+    <div class="page-header text-center">
+        <a href="/profile" class="btn btn-primary btn-sm">Log more food</a>
+    </div>
 </div>
 </body>
 </html>
