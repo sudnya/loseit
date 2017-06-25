@@ -1,4 +1,6 @@
 module.exports = function(app, passport) {
+var moment = require('moment');
+var _ = require('underscore');
 
 // normal routes ===============================================================
 
@@ -14,10 +16,10 @@ module.exports = function(app, passport) {
         });
     });
 
-    // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+    // REDIRECT TO CHATBOT ==============================
+    app.get('/back-to-bot', function(req, res) {
+        //req.logout();
+        res.redirect('https://www.messenger.com/t/119981208576498/');
     });
 
 // =============================================================================
@@ -60,38 +62,46 @@ module.exports = function(app, passport) {
                 
         var mongoose = require('mongoose');
         mongoose.connect(configDB.url) // connect to our database
-        //var Meal       = require('../app/models/meal');
+        var Meal       = require('../models/meal');
 
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
         db.once('open', function() {
           // we're connected!
         });
-        var mealSchema = mongoose.Schema({
-            username: String,
-            item: String,
-            day: Date,
-            hungerLevel: Number,
-            satietyLevel: Number
-        });
 
-        var Meal = mongoose.model('Meal', mealSchema);
-                
         app.post('/meals', (request, response) => {
             db.collection('meals').save(request.body, (err, result) => {
                 if (err) return console.log(err)
                 console.log(request)
                 console.log('saved to database')
-                response.redirect('/profile')
+                response.redirect('/review')
             })
         });
 
         app.get('/review', (request, response) => {
-            db.collection('meals').find().toArray((err, result) => {
-                console.log(result)
+            console.log(request.user.local['username'])
+            db.collection('meals').find({'username': request.user.local['username']}).toArray((err, result) => {
+            var formatDate = function(date) { return moment(date).format("MM/DD/YYYY"); }
+            for(var i = 0; i < result.length; ++i) {
+                result[i].date = formatDate(result[i].date);
+            }
+            var groupedMeals = _.groupBy(result, function(meal){ return meal.date; })
+            var sortedMealKeys = [];
+
+            for(key in groupedMeals) {
+                sortedMealKeys.push(key);
+            }
+            
+            sortedMealKeys = sortedMealKeys.sort().reverse();
+            
+            for (index in sortedMealKeys) {
+                var key = sortedMealKeys[index];
+                console.log(Object.prototype.toString.call(key) + " " + key + " = " + String(groupedMeals[key]));
+            }
             if (err) return console.log(err)
             // renders index.ejs
-                response.render('review.ejs', {meals: result, user : request.user})
+                response.render('review.ejs', {groupedMeals: groupedMeals, sortedMealKeys : sortedMealKeys, moment: moment})
             })
         })
 // =============================================================================
