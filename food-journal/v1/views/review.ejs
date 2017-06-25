@@ -13,8 +13,8 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-                    
 
 </head>
 <body>
@@ -22,9 +22,9 @@
 <div class="container-fluid">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Food Journal Review </h1>
-        <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
-        <a href="/profile" class="btn btn-primary btn-sm">Home</a>
+        <h1><span class="fa "></span>Food Journal Review</h1>
+        <h5><span class="fa "></span>Click Cancel Top Left to Exit</h5>
+        <a href="/profile" class="btn btn-primary btn-sm">Log more food</a>
     </div>
 
     <div class="row">
@@ -34,38 +34,40 @@
                 <thead>
                 <tr>
                     <th>Date</th>
-                    <th>MealType</th>
+                    <th>Meal Type</th>
                     <th>Meal</th>
                     <th>Hunger Level</th>
-                    <th>Satiety Level</th>
+                    <th>Fullness Level</th>
                 </tr>
                 </thead>
-                <% for(var i=0; i<meals.length; i++) {%>
-                    <% if ( meals[i].username === user.local.username) {%>
-                        <tbody>
-
-                            <% if (meals[i].hungerLevel > 4) {%><tr class="success">
-                            <%}%>
-                            <% if (meals[i].hungerLevel < 2) {%><tr class="danger">
-                            <%}%>
- 
-                            <td><%= meals[i].date %></td>
-                            <td><%= meals[i].mealType %></td>
-                            <td><%= meals[i].item %></td>
-                            <td><%= meals[i].hungerLevel %></td>
-                            <td><%= meals[i].satietyLevel %></td>
-                            </tr> <%}%> 
-                        </tbody>
-            <% } %>
-            </table>
-
+                <% for(index in sortedMealKeys) {%>
+                    <tbody>
+                    <% var date = sortedMealKeys[index]; %>
+                    <tr>
+                        <td><%= moment(groupedMeals[date][0].date).format("MM/DD/YYYY, dddd") %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <% for(var i=0; i<groupedMeals[date].length; i++) {%>
+                        <tr>
+                            <td></td>
+                            <td><%= groupedMeals[date][i].mealType %></td>
+                            <td><%= groupedMeals[date][i].item %></td>
+                            <td><%= groupedMeals[date][i].hungerLevel %></td>
+                            <td><%= groupedMeals[date][i].satietyLevel %></td>
+                        </tr>
+                    <%}%> 
+                    </tbody>
+                <%}%>
+            </table> 
         </form>
-
-
-    <div class="text-center">
     </div>
-
-</div>
+        
+    <div class="page-header text-center">
+        <a href="/profile" class="btn btn-primary btn-sm">Log more food</a>
+    </div>
 </div>
 </body>
 </html>

@@ -25,6 +25,7 @@
     "jade": "^1.11.0",
     "jade-bootstrap": "^1.0.14",
     "method-override": "~2.3.6",
+    "moment": "^2.18.1",
     "mongodb": "^2.2.27",
     "mongodb-core": "^2.1.12",
     "mongoose": "^4.10.1",
@@ -38,6 +39,7 @@
     "rangeslider.js": "^2.3.0",
     "readable-stream": "^2.2.11",
     "string_decoder": "^1.0.2",
+    "underscore": "^1.8.3",
     "upgrade": "^1.1.0"
   },
   "devDependencies": {

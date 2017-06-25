@@ -10,21 +10,19 @@
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <!--  jQuery -->
-    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Bootstrap Date-Picker Plugin     -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="/stylesheets/rangeslider.css">
-    <link rel="stylesheet" href="/stylesheets/bootstrap-datepicker3.css"/>
-    <script type="text/javascript" src="/javascripts/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 </head>
 <body>
 
 <div class="container-fluid">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Food Journal Home </h1>
-        <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
-        <a href="/review" class="btn btn-primary btn-sm">Review</a>
+        <h1><span class="fa "></span>Food Journal Home</h1>
+        <h5><span class="fa "></span>Click Cancel Top Left to Exit</h5>
+        <a href="/review" class="btn btn-primary btn-sm">View summary</a>
     </div>
 
     <div class="row">
@@ -38,10 +36,11 @@
                     
                     
                     <!-- Form code begins -->
-                    <form action="/meals" method="POST">
+                    <form name="myForm" action="/meals" method="POST" onsubmit="return validateForm()">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
-                                <input class="form-control" id="date" name="date" placeholder=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
+                                
+                                <input class="form-control" id="date" name="date" value=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
                                 
                                 <input type='hidden' name='username' value=<%= user.local.username %>> 
                                 
@@ -56,20 +55,20 @@
                                 
                                 <br><br>
                                 <label>How hungry were you right <strong> before </strong> this meal?</label><br>
-                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="1">Not hungry at all</label>
-                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="2">A little hungry</label>
-                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="3">Hungry</label>
-                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="4">Quite hungry</label>
-                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="5">Starving</label>
+                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="1">(1) Not hungry at all</label><br>
+                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="2">(2) A little hungry</label><br>
+                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="3">(3) Hungry</label><br>
+                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="4">(4) Quite hungry</label><br>
+                                    <label class="radio-inline"><input type="radio" name="hungerLevel" value="5">(5) Starving</label><br>
                                 <br><br><br>
 
                                 <br><br>
-                                <label>How satisfied were you <strong> after </strong> this meal?</label><br>
-                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="1">Not satisfied</label>
-                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="2">A little satisfied</label>
-                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="3">Satisfied</label>
-                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="4">Quite satisfied</label>
-                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="5">Overfull!</label>
+                                <label>How full were you <strong> after </strong> this meal?</label><br>
+                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="1">(1) Not full</label><br>
+                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="2">(2) A little full</label><br>
+                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="3">(3) Full</label><br>
+                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="4">(4) Quite full</label><br>
+                                    <label class="radio-inline"><input type="radio" name="satietyLevel" value="5">(5) Overfull!</label><br>
                                 <br><br><br>
 
 
@@ -81,10 +80,34 @@
     
                     </form>
                     <!-- Form code ends --> 
-                    
+                    <script>
+                        function validateForm() {
+                            var name = document.forms["myForm"]["mealType"].value;
+                            if (name == "") {
+                                alert("Meal name must be selected");
+                                return false;
+                            }
+                            var meal = document.forms["myForm"]["item"].value;
+                            if (meal == "") {
+                                alert("Meal description must be filled out");
+                                return false;
+                            }
+                            var hunger = document.forms["myForm"]["hungerLevel"].value;
+                            if (hunger == "") {
+                                alert("Hunger Level must be selected");
+                                return false;
+                            }
+                            var fullness = document.forms["myForm"]["satietyLevel"].value;
+                            if (fullness == "") {
+                                alert("Fullness Level must be selected");
+                                return false;
+                            }
+                        }
+                    </script>
                     <script>
                         $(document).ready(function(){
-                          var date_input=$('input[name="date"]'); //our date input has the name "date"
+                          var date_input = $('input[name="date"]'); //our date input has the name "date"
+
                           var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                           var options={
                             format: 'mm/dd/yyyy',
@@ -105,9 +128,6 @@
             </div>
         </div>
         
-
-    <div class="text-center">
-    </div>
 
 </div>
 </body>
