@@ -36,7 +36,7 @@ module.exports.createUserSession = function(req, user) {
  * @returns {Object} - An Express app object.
  */
 module.exports.createApp = function() {
-  mongoose.Promise = global.Promise; 
+  mongoose.Promise = global.Promise;
   //TODO: bad idea to check in the following line :(
   mongoose.connect('mongodb://admin:Loseit2017@ds147681.mlab.com:47681/food-journal');
 
@@ -50,10 +50,10 @@ module.exports.createApp = function() {
   app.use(session({
     cookieName: 'session',
     secret: 'keyboard cat',
-    expires: new Date(Date.now() + 4294967295), 
-    maxAge:  4294967295,//(365 * 24 * 60 * 60 * 1000) + (30*24*60*60 * 10000) 
-    duration: 4294967295,//(365 * 24 * 60 * 60 * 1000) + (30*24*60*60 * 10000), // 365 days * 24 hours * 60 mins * 60 seconds * 1000millis
-    activeDuration: 4294967295,//365 * 24 * 60 * 60 * 1000,
+    expires: new Date(Date.now() + 4294967295),
+    maxAge:  4294967295,
+    duration: 4294967295,
+    activeDuration: 4294967295,
   }));
 
   var csrf = require('csurf');
@@ -81,4 +81,3 @@ module.exports.requireLogin = function(req, res, next) {
     next();
   }
 };
-
