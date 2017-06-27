@@ -13,5 +13,10 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.12",
+    "connect-browser-sync": "^2.1.0",
+    "nodemon": "^1.11.0"
   }
 }
