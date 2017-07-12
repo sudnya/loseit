@@ -21,7 +21,6 @@
 
     <div class="page-header text-center">
         <h1><span class="fa "></span>Food Journal Home</h1>
-        <h5><span class="fa "></span>Click Cancel Top Left to Exit</h5>
         <a href="/review" class="btn btn-primary btn-sm">View summary</a>
     </div>
 
@@ -33,26 +32,31 @@
 
                 <% if (user.local.username) { %>
                     <p> <strong>Welcome <%= user.local.username %> ! </strong><br> </p>
-                    
-                    
+                    <%uname = user.local.username%>
+                <% } %>
+                <% if (user.facebook.name) { %>
+                    <%uname = user.facebook.id%>
+                <% } %>
+
+
                     <!-- Form code begins -->
                     <form name="myForm" action="/meals" method="POST" onsubmit="return validateForm()">
                           <div class="form-group"> <!-- Date input -->
                                 <label class="control-label" for="date">Date</label>
-                                
+
                                 <input class="form-control" id="date" name="date" value=<%= new Date().toLocaleDateString()%> type="text"/><br><br><br><br>
-                                
-                                <input type='hidden' name='username' value=<%= user.local.username %>> 
-                                
+
+                                <input type='hidden' name='username' value=<%= uname %>>
+
                                 <label>Meal Name</label><br>
                                     <label class="radio-inline"><input type="radio" name="mealType" value="Breakfast">Breakfast</label>
                                     <label class="radio-inline"><input type="radio" name="mealType" value="Lunch">Lunch</label>
                                     <label class="radio-inline"><input type="radio" name="mealType" value="Dinner">Dinner</label>
-                                    <label class="radio-inline"><input type="radio" name="mealType" value="Other">Other</label><br><br><br>
+                                    <label class="radio-inline"><input type="radio" name="mealType" value="Snack">Snack</label><br><br><br>
 
                                 <label for ="food">Meal description</label>
                                 <textarea class = "form-control" rows = "4" name="item"></textarea>
-                                
+
                                 <br><br>
                                 <label>How hungry were you right <strong> before </strong> this meal?</label><br>
                                     <label class="radio-inline"><input type="radio" name="hungerLevel" value="1">(1) Not hungry at all</label><br>
@@ -77,9 +81,9 @@
                           <div class="form-group"> <!-- Submit button -->
                             <button class="btn btn-primary " name="submit" type="submit">Submit</button>
                           </div>
-    
+
                     </form>
-                    <!-- Form code ends --> 
+                    <!-- Form code ends -->
                     <script>
                         function validateForm() {
                             var name = document.forms["myForm"]["mealType"].value;
@@ -123,11 +127,10 @@
                         })
                     </script>
 
-                <% } %>
 
             </div>
         </div>
-        
+
 
 </div>
 </body>

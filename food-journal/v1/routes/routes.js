@@ -29,7 +29,7 @@ var _ = require('underscore');
     // locally --------------------------------
         // LOGIN ===============================
         // show the login form
-        app.get('/login', function(req, res) {
+        /*app.get('/login', function(req, res) {
             res.render('login.ejs', { message: req.flash('loginMessage') });
         });
 
@@ -51,15 +51,15 @@ var _ = require('underscore');
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
-        }));
+        }));*/
 
-        
+
         // =============================================================================
-        // ENTER MEAL TO DB 
+        // ENTER MEAL TO DB
         // =============================================================================
 
         var configDB = require('../config/database.js');
-                
+
         var mongoose = require('mongoose');
         mongoose.connect(configDB.url) // connect to our database
         var Meal       = require('../models/meal');
@@ -80,8 +80,17 @@ var _ = require('underscore');
         });
 
         app.get('/review', (request, response) => {
-            console.log(request.user.local['username'])
-            db.collection('meals').find({'username': request.user.local['username']}).toArray((err, result) => {
+            //console.log(request.user.local['username'])
+            //console.log("\n\n\n\n\n")
+            //console.log(request.user.facebook['id'])
+            if (request.user.local['username']) {
+                uname = request.user.local['username'];
+            } if (request.user.facebook['id']) {
+                uname = request.user.facebook['id'];
+            }
+
+            console.log(uname);
+            db.collection('meals').find({'username': uname}).toArray((err, result) => {
             var formatDate = function(date) { return moment(date).format("MM/DD/YYYY"); }
             for(var i = 0; i < result.length; ++i) {
                 result[i].date = formatDate(result[i].date);
@@ -92,9 +101,9 @@ var _ = require('underscore');
             for(key in groupedMeals) {
                 sortedMealKeys.push(key);
             }
-            
+
             sortedMealKeys = sortedMealKeys.sort().reverse();
-            
+
             for (index in sortedMealKeys) {
                 var key = sortedMealKeys[index];
                 console.log(Object.prototype.toString.call(key) + " " + key + " = " + String(groupedMeals[key]));
@@ -109,6 +118,7 @@ var _ = require('underscore');
 // =============================================================================
 
     // locally --------------------------------
+        /*
         app.get('/connect/local', function(req, res) {
             res.render('connect-local.ejs', { message: req.flash('loginMessage') });
         });
@@ -117,7 +127,27 @@ var _ = require('underscore');
             failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
+        */
 
+
+// =====================================
+    // FACEBOOK ROUTES =====================
+    // =====================================
+    // route for facebook authentication and login
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/profile',
+            failureRedirect : '/'
+        }));
+
+    // route for logging out
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 };
 
 // route middleware to ensure user is logged in
@@ -127,5 +157,3 @@ function isLoggedIn(req, res, next) {
 
     res.redirect('/');
 }
-
-
