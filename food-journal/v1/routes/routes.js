@@ -16,44 +16,6 @@ var _ = require('underscore');
         });
     });
 
-    // REDIRECT TO CHATBOT ==============================
-    app.get('/back-to-bot', function(req, res) {
-        //req.logout();
-        res.redirect('https://www.messenger.com/t/119981208576498/');
-    });
-
-// =============================================================================
-// AUTHENTICATE (FIRST LOGIN) ==================================================
-// =============================================================================
-
-    // locally --------------------------------
-        // LOGIN ===============================
-        // show the login form
-        /*app.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
-        });
-
-        // process the login form
-        app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
-
-        // SIGNUP =================================
-        // show the signup form
-        app.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
-        });
-
-        // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));*/
-
-
         // =============================================================================
         // ENTER MEAL TO DB
         // =============================================================================
@@ -80,12 +42,8 @@ var _ = require('underscore');
         });
 
         app.get('/review', (request, response) => {
-            //console.log(request.user.local['username'])
-            //console.log("\n\n\n\n\n")
-            //console.log(request.user.facebook['id'])
-            if (request.user.local['username']) {
-                uname = request.user.local['username'];
-            } if (request.user.facebook['id']) {
+            console.log(request.user.facebook['id'])
+            if (request.user.facebook['id']) {
                 uname = request.user.facebook['id'];
             }
 
@@ -113,24 +71,7 @@ var _ = require('underscore');
                 response.render('review.ejs', {groupedMeals: groupedMeals, sortedMealKeys : sortedMealKeys, moment: moment})
             })
         })
-// =============================================================================
-// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
-// =============================================================================
-
-    // locally --------------------------------
-        /*
-        app.get('/connect/local', function(req, res) {
-            res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-        });
-        app.post('/connect/local', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
-        */
-
-
-// =====================================
+     // =====================================
     // FACEBOOK ROUTES =====================
     // =====================================
     // route for facebook authentication and login

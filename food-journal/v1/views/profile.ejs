@@ -30,11 +30,7 @@
         <div class="col-sm-6">
             <div class="well">
 
-                <% if (user.local.username) { %>
-                    <p> <strong>Welcome <%= user.local.username %> ! </strong><br> </p>
-                    <%uname = user.local.username%>
-                <% } %>
-                <% if (user.facebook.name) { %>
+                <% if (user.facebook.id) { %>
                     <%uname = user.facebook.id%>
                 <% } %>
 
