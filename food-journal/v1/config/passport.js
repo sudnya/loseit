@@ -15,17 +15,15 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
+    
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        console.log(id);
-        console.log("\n\n\n");
-        console.log(user);
         User.findById(id, function(err, user) {
-            done(err, user);
+            done(err, user.id);
         });
     });
 
